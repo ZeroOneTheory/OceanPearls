@@ -2477,7 +2477,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 19.56
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -2501,7 +2501,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.010001916, y: 7.340001, z: -10}
+  m_LocalPosition: {x: 0.010000009, y: 7.0320005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -6801,7 +6801,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1456056813}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ccfe38904273334db3a59ffef28c067, type: 3}
+  m_Script: {fileID: 11500000, guid: 6015c583c2bfe444d95c63081dec03b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1458222217
@@ -8788,7 +8788,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1914516308}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 20
+    OrthographicSize: 19.56
     NearClipPlane: 0.001
     FarClipPlane: 1000
     Dutch: 0
@@ -8809,7 +8809,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1822378046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.010001916, y: 7.340001, z: -10}
+  m_LocalPosition: {x: 0.010000009, y: 7.0320005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2127660575}
@@ -9378,10 +9378,11 @@ MonoBehaviour:
   rb2d: {fileID: 1914516310}
   ballStart: {fileID: 978096976}
   ball: {fileID: 1423471810}
-  launchSpeed: 18
+  launchSpeed: 15
   lvlControl: {fileID: 1456056815}
   anim: {fileID: 0}
   releaseBall: 0
+  isDead: 0
   walls: {x: -13, y: 13}
   moveSpeed: 34
   maxSpeed: 20
