@@ -18,7 +18,7 @@ public class BallController : MonoBehaviour
     private Vector2 lastVelocity;
 
     [SerializeField]
-    private PlayerMove plyControl;
+    private PlayerController plyControl;
     
     public CircleCollider2D m_col;
     [SerializeField]

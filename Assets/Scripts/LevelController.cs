@@ -14,7 +14,10 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyUp(KeyCode.R)){
+            Scene scene = SceneManager.GetActiveScene(); 
+            SceneManager.LoadScene(scene.name);
+        }
     }
 
     public void LevelFailed(){

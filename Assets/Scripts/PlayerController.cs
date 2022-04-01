@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public Rigidbody2D rb2d;
     public Transform ballStart;
