@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public bool isDead = false;
     public float moveSpeed = 5f;
     public float maxSpeed = 10f;
+    public float launchLean=-2;
 
     // START  
     void Awake()
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
     public void SpitPearl()
     {
-        Vector2 launchDirection = new Vector2(-2, ballLaunchSpeed);
+        Vector2 launchDirection = new Vector2(launchLean, ballLaunchSpeed);
         myBallCtrl.AddForceToBall(launchDirection);
         releaseBall = true;
         Invoke("EnableBall", .25f);
@@ -109,9 +110,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!isDead)
         {
+            var xAxisRaw = Input.GetAxis("Horizontal");
             position.x += Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
             position.x = Mathf.Clamp(position.x, walls.x, walls.y);
             transform.position = position;
+            if(xAxisRaw<0){launchLean=-2;}else if(xAxisRaw>0){launchLean=2;}
         }
 
     }
@@ -119,8 +122,9 @@ public class PlayerController : MonoBehaviour
     {
         var xAxisRaw = Input.GetAxis("Horizontal");
 
-        if (!isDead)
+        if (!isDead && !lvlControl.levelWin)
         {
+
             if (releaseBall)
             {
                 if (xAxisRaw != 0)
@@ -128,10 +132,12 @@ public class PlayerController : MonoBehaviour
                     if (xAxisRaw < 0)
                     {
                         ChangeAnimationState(PLAYER_MOVE_L);
+                        
                     }
                     if (xAxisRaw > 0)
                     {
                         ChangeAnimationState(PLAYER_MOVE_R);
+                        
                     }
                 }
                 else
@@ -142,6 +148,7 @@ public class PlayerController : MonoBehaviour
                 ChangeAnimationState(PLAYER_IDLE);
             }
 
+            
         }
     }
     public void ChangeAnimationState(string newState)

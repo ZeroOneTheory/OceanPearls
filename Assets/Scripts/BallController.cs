@@ -33,6 +33,9 @@ public class BallController : MonoBehaviour
     {
         lastVelocity = rb2d.velocity;
         m_col.enabled = colliderEnabled;
+        if(lvlCtrl.levelWin){
+            rb2d.velocity = Vector2.zero;
+        }
     }
 
     //  METHODS
@@ -83,7 +86,11 @@ public class BallController : MonoBehaviour
         if (col.gameObject.tag == "Bricks")
         {
             //ballBounce(col);
-            col.gameObject.SetActive(false);
+            var BrickController = col.gameObject.GetComponent<BrickController>();
+            if(BrickController!=null){
+                BrickController.KnockOnBrick(1);
+            }
+            
         }
 
         if (col.gameObject.tag == "Player")
