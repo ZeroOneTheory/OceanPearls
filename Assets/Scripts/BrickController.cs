@@ -6,21 +6,16 @@ public class BrickController : MonoBehaviour
 {
     public bool isBreakable = true;
     public int hits = 1;
+    private LevelController lvlControl;
 
     [SerializeField]
     private SpriteRenderer sprite;
-    // Start is called before the first frame update
+
+//  START
     void Awake(){
+
         sprite = GetComponent<SpriteRenderer>();
-    }
-    void Start()
-    {
-        
+        lvlControl = GameObject.FindObjectOfType<LevelController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

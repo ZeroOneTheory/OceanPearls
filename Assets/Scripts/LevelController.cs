@@ -5,23 +5,31 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [SerializeField]
+    private PlayerController plyCtrl;
+
+//  STARTS
+    void Awake(){      
+        plyCtrl = GameObject.FindObjectOfType<PlayerController>();
     }
 
-    // Update is called once per frame
+//  UPDATES
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.R)){
-            Scene scene = SceneManager.GetActiveScene(); 
-            SceneManager.LoadScene(scene.name);
+        if (Input.GetKeyUp(KeyCode.R))
+        {
+            plyCtrl.ChangeAnimationState("Clarence_hit");
+
         }
     }
 
-    public void LevelFailed(){
-        Scene scene = SceneManager.GetActiveScene(); 
+//  METHODS
+    public PlayerController GetPlayerController(){
+        return plyCtrl;
+    }
+    public void LevelFailed()
+    {
+        Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }
 }

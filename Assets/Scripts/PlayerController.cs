@@ -2,96 +2,155 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody2D rb2d;
-    public Transform ballStart;
-    public GameObject ball;
-    public float launchSpeed=10f;
-    
+
+    #region Animations
+    public string PLAYER_IDLE = "Clarence_idle";
+    public string PLAYER_SHOOT = "Clarence_shoot";
+    public string PLAYER_CHOMP = "Clarence_chomp";
+    public string PLAYER_HIT = "Clarence_hit";
+    public string PLAYER_LOSE = "Clarence_lose";
+    public string PLAYER_MOVE_L = "Clarence_move-L";
+    public string PLAYER_MOVE_R = "Clarence_move-R";
+    public string PLAYER_POWERUP = "Clarence_powerup";
+    public string PLAYER_SILLY = "Clarence_silly";
+    #endregion
 
     private Vector2 move;
     private Vector2 position;
-    private BallController ballControl;
+    private BallController myBallCtrl;
     [SerializeField]
     private LevelController lvlControl;
+    private string currentAnimState;
+
+    public Rigidbody2D rb2d;
+    public Transform ballLaunchTransform;
+    public GameObject myBall_GO;
     public Animator anim;
-    public const string PLAYER_IDLE = "Clarence_Idle";
-    public const string PLAYER_SHOOT = "Clarence_shoot";
-    public const string PLAYER_CHOMP = "Clarence_chomp";
+    public Vector2 walls;
 
     public bool releaseBall = false;
-
+    public float ballLaunchSpeed = 10f;
     public bool isDead = false;
-
-    public Vector2 walls;
     public float moveSpeed = 5f;
     public float maxSpeed = 10f;
-    // Start is called before the first frame update
-    
-    void Awake(){
-        rb2d = GetComponent<Rigidbody2D>();   
-        anim = GetComponent<Animator>();
-        lvlControl = GameObject.FindObjectOfType<LevelController>();
+
+    // START  
+    void Awake()
+    {
+        GetPlayerComponents();
     }
+
     void Start()
     {
-           
-           ballControl = ball.GetComponent<BallController>();
-           position = transform.position;
+
+        myBallCtrl = myBall_GO.GetComponent<BallController>();
+        position = transform.position;
     }
 
-    // Update is called once per frame
+    //  UPDATES
     void Update()
     {
-        
-        BallLaunch();
+
+        LaunchBallControl();
+
+        AnimationUpdate();
 
     }
 
-    void FixedUpdate(){
+    void FixedUpdate()
+    {
 
         PlayerMovement();
-        
+
     }
 
-    private void BallLaunch()
+
+    //  METHODS
+
+    public void SpitPearl()
+    {
+        Vector2 launchDirection = new Vector2(-2, ballLaunchSpeed);
+        myBallCtrl.AddForceToBall(launchDirection);
+        releaseBall = true;
+        Invoke("EnableBall", .25f);
+
+    }
+    public void FailLevel()
+    {
+
+      lvlControl.LevelFailed();
+
+    }
+
+    private void GetPlayerComponents()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        lvlControl = GameObject.FindObjectOfType<LevelController>();
+
+    }
+    private void LaunchBallControl()
     {
         if (!releaseBall)
         {
-            ball.transform.position = ballStart.position;   
+            myBall_GO.transform.position = ballLaunchTransform.position;
         }
 
         if (releaseBall == false && Input.GetKeyDown(KeyCode.Space))
         {
-            anim.Play(PLAYER_SHOOT);
+            ChangeAnimationState(PLAYER_SHOOT);
         }
     }
-
-    public void SpitPearl()
-    {
-        Vector2 launchDirection = new Vector2(-2, launchSpeed);
-        ballControl.AddForceToBall(launchDirection);
-        releaseBall = true;
-        Invoke("EnableBall",.25f);
-    }
-
-    public void FailLevel(){
-
-        lvlControl.LevelFailed();
-    }
-
     private void EnableBall()
     {
-        ballControl.colliderEnabled = true;
+        myBallCtrl.EnableBall();
     }
-
     private void PlayerMovement()
     {
-        if(!isDead){
+        if (!isDead)
+        {
             position.x += Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
             position.x = Mathf.Clamp(position.x, walls.x, walls.y);
             transform.position = position;
         }
-        
+
+    }
+    private void AnimationUpdate()
+    {
+        var xAxisRaw = Input.GetAxis("Horizontal");
+
+        if (!isDead)
+        {
+            if (releaseBall)
+            {
+                if (xAxisRaw != 0)
+                {
+                    if (xAxisRaw < 0)
+                    {
+                        ChangeAnimationState(PLAYER_MOVE_L);
+                    }
+                    if (xAxisRaw > 0)
+                    {
+                        ChangeAnimationState(PLAYER_MOVE_R);
+                    }
+                }
+                else
+                {
+                    ChangeAnimationState(PLAYER_IDLE);
+                }
+            } else {
+                ChangeAnimationState(PLAYER_IDLE);
+            }
+
+        }
+    }
+    public void ChangeAnimationState(string newState)
+    {
+        if (currentAnimState == newState) return;
+
+        anim.Play(newState);
+
+        currentAnimState = newState;
     }
 }
 

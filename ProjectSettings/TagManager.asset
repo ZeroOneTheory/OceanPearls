@@ -7,6 +7,7 @@ TagManager:
   - Bounds
   - Bricks
   - Out-Bounds
+  - Level Control
   layers:
   - Default
   - TransparentFX
