@@ -326,7 +326,7 @@ Transform:
   m_GameObject: {fileID: 123647076}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.12, y: 0.489, z: 0}
-  m_LocalScale: {x: 1, y: 2.2174861, z: 1}
+  m_LocalScale: {x: 1, y: 2.6887019, z: 1}
   m_Children: []
   m_Father: {fileID: 1625190305}
   m_RootOrder: 0
@@ -877,8 +877,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 296170330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.62, y: 1.6053619, z: 0}
-  m_LocalScale: {x: 35.394802, y: 0.062316, z: 1}
+  m_LocalPosition: {x: 8.62, y: 1.665, z: 0}
+  m_LocalScale: {x: 76.36581, y: 0.213131, z: 1.0217}
   m_Children: []
   m_Father: {fileID: 1625190305}
   m_RootOrder: 3
@@ -6501,7 +6501,7 @@ Transform:
   m_GameObject: {fileID: 488136259}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 24.94, y: 0.45371166, z: 0}
-  m_LocalScale: {x: 1, y: 2.137872, z: 1}
+  m_LocalScale: {x: 1, y: 2.6458304, z: 1}
   m_Children: []
   m_Father: {fileID: 1625190305}
   m_RootOrder: 1
@@ -6650,7 +6650,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 19.56
+  orthographic size: 19
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -6674,7 +6674,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.010000009, y: 7.0320005, z: -10}
+  m_LocalPosition: {x: 0.010001916, y: 6.6400013, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 653017086}
@@ -15565,7 +15565,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1914516308}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 19.56
+    OrthographicSize: 19
     NearClipPlane: 0.001
     FarClipPlane: 1000
     Dutch: 0
@@ -15586,7 +15586,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1822378046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.010000009, y: 7.0320005, z: -10}
+  m_LocalPosition: {x: 0.010001916, y: 6.6400013, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2127660575}
