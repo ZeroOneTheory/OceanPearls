@@ -48,3 +48,6 @@ TagManager:
   - name: Pearl
     uniqueID: 1395522689
     locked: 0
+  - name: Bricks
+    uniqueID: 2263072911
+    locked: 0
