@@ -72,9 +72,12 @@ public class BallController : MonoBehaviour
     //  EVENTS
     void OnCollisionEnter2D(Collision2D col)
     {
+        Debug.Log(Vector2.Reflect(rb2d.velocity,col.contacts[0].normal)); 
+        
         if (col.gameObject.tag == "Bounds")
         {
-            //ballBounce(col);     
+            //ballBounce(col);   
+            ;  
         }
 
         if (col.gameObject.tag == "Out-Bounds")
@@ -91,12 +94,13 @@ public class BallController : MonoBehaviour
                 BrickController.KnockOnBrick(1);
             }
             
+            
         }
 
         if (col.gameObject.tag == "Player")
         {
             //ballBounce(col);
-            Debug.Log(rb2d.velocity);
+
         }
 
     }

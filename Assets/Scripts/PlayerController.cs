@@ -82,6 +82,12 @@ public class PlayerController : MonoBehaviour
       lvlControl.LevelFailed();
 
     }
+    public void NextLevel()
+    {
+        
+      lvlControl.ProgressLevel();
+
+    }
 
     private void GetPlayerComponents()
     {
@@ -159,5 +165,6 @@ public class PlayerController : MonoBehaviour
 
         currentAnimState = newState;
     }
+
 }
 

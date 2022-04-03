@@ -10,6 +10,7 @@ public class LevelController : MonoBehaviour
     [SerializeField]
     private int lastBrickCount = 0;
     public bool levelWin = false;
+    public List<string> levels =new List<string>();
 
     //  STARTS
     void Awake()
@@ -72,5 +73,18 @@ public class LevelController : MonoBehaviour
     {
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
+    }
+    public void ProgressLevel()
+    {
+        var level_name="StageScene";
+        switch(SceneManager.GetActiveScene().name){
+
+            case "StageScene": level_name = "Level_0"; break;
+            case "Level_0": level_name = "Level_1"; break;
+            case "Level_1": level_name = "Level_0"; break;
+
+        }
+
+        SceneManager.LoadScene(level_name);
     }
 }
