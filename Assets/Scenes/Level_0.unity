@@ -7595,10 +7595,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3394284608699732704, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_Radius
+      value: 1.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394284608699732704, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394284608699732704, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.63
+      objectReference: {fileID: 0}
     - target: {fileID: 3394284608699732705, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1914516308}
+    - target: {fileID: 3394284608699732707, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c46fc67e5d7521b4085d6af0634346b9, type: 3}
     - target: {fileID: 3394284608699732732, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
       propertyPath: m_TagString
       value: Enemy
@@ -7611,6 +7627,26 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: cc59be4a1b92d214984c7cb50be38034, type: 2}
+    - target: {fileID: 3394284608699732735, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394284608699732735, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394284608699732735, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394284608699732735, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394284608699732735, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 17.53
+      objectReference: {fileID: 0}
     - target: {fileID: 3394284609357068738, guid: 8dc3e569c9a1dcb4fa49a02571296f1e, type: 3}
       propertyPath: m_RootOrder
       value: 1

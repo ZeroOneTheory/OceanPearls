@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3394284608699732704}
   - component: {fileID: 3394284608699732705}
   - component: {fileID: 3394284608699732734}
+  - component: {fileID: 8596697625412009972}
   m_Layer: 0
   m_Name: Trash_1
   m_TagString: Untagged
@@ -28,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3394284608699732732}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.22, y: 21.94, z: 0}
-  m_LocalScale: {x: 0.5594, y: 0.5594, z: 0.5594}
+  m_LocalPosition: {x: 0.23, y: 21.84, z: 0}
+  m_LocalScale: {x: 0.3921394, y: 0.3921394, z: 0.3921394}
   m_Children: []
   m_Father: {fileID: 3394284609357068738}
   m_RootOrder: 0
@@ -116,6 +117,7 @@ MonoBehaviour:
   target: {fileID: 0}
   rb2d: {fileID: 3394284608699732734}
   sprite: {fileID: 3394284608699732707}
+  hitpoints: 1
   moveSpeed: 1
   changeDirectionTime: 10
   changeDir: 5
@@ -140,6 +142,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &8596697625412009972
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3394284608699732732}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6eb6fe12ee6b10041a6a527228df8ee5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3394284609357068739
 GameObject:
   m_ObjectHideFlags: 0
