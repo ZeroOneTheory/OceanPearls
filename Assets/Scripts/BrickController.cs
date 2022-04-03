@@ -19,14 +19,13 @@ public class BrickController : MonoBehaviour
     }
 
     public void KnockOnBrick(int m_hits){
-        Debug.Log("Knock");
         if(isBreakable){
             hits-= m_hits;
         }
         if(hits<=0){
             BreakBrick();
         }
-        lvlControl.CheckForWin();
+        
     }
 
     public void BreakBrick(){

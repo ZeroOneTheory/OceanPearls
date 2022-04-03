@@ -8,6 +8,7 @@ TagManager:
   - Bricks
   - Out-Bounds
   - Level Control
+  - Enemy
   layers:
   - Default
   - TransparentFX

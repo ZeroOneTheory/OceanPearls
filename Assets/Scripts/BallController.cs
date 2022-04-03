@@ -33,8 +33,20 @@ public class BallController : MonoBehaviour
     {
         lastVelocity = rb2d.velocity;
         m_col.enabled = colliderEnabled;
-        if(lvlCtrl.levelWin){
+        if (lvlCtrl.levelWin)
+        {
             rb2d.velocity = Vector2.zero;
+        }
+
+        if (rb2d.velocity.magnitude < minVelocity)
+        {
+            rb2d.AddRelativeForce(rb2d.velocity,ForceMode2D.Impulse);
+            Debug.Log("BELOW MIN!" + rb2d.velocity.magnitude);
+        }
+        if (rb2d.velocity.magnitude > maxVelocity)
+        {
+            rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+            Debug.Log("ABOVE MAX!" + rb2d.velocity.magnitude);
         }
     }
 
@@ -68,16 +80,17 @@ public class BallController : MonoBehaviour
         rb2d.velocity = lastVelocity * .5f;
         plyCtrl.isDead = true;
     }
-    
+
     //  EVENTS
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log(Vector2.Reflect(rb2d.velocity,col.contacts[0].normal)); 
-        
+        //Debug.Log(Vector2.Reflect(rb2d.velocity,col.contacts[0].normal)); 
+        Debug.Log(rb2d.velocity.magnitude);
+
         if (col.gameObject.tag == "Bounds")
         {
             //ballBounce(col);   
-            ;  
+            ;
         }
 
         if (col.gameObject.tag == "Out-Bounds")
@@ -90,11 +103,24 @@ public class BallController : MonoBehaviour
         {
             //ballBounce(col);
             var BrickController = col.gameObject.GetComponent<BrickController>();
-            if(BrickController!=null){
+            if (BrickController != null)
+            {
                 BrickController.KnockOnBrick(1);
             }
-            
-            
+
+
+        }
+
+        if (col.gameObject.tag == "Enemy")
+        {
+            //ballBounce(col);
+            EnemyController Enemy = col.gameObject.GetComponent<EnemyController>();
+            Debug.Log(Enemy);
+            if (Enemy != null)
+            {
+                Enemy.Hit(1);
+            }
+
         }
 
         if (col.gameObject.tag == "Player")
