@@ -159,6 +159,7 @@ public class BallController : MonoBehaviour
                 {
                     heldPosition = plyCtrl.ballLaunchTransform;
                     isHeld = true;
+                    rb2d.velocity = Vector2.zero;
                 }
             }
 

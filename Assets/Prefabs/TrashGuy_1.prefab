@@ -151,6 +151,7 @@ MonoBehaviour:
   hitpoints: 1
   moveSpeed: 1
   changeDirectionTime: 10
+  maxVelocity: 5
   changeDir: 5
 --- !u!50 &4309094890814188985
 Rigidbody2D:

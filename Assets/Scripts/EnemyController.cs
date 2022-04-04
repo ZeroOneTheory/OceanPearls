@@ -7,9 +7,11 @@ public class EnemyController : MonoBehaviour
     public Transform target;
     public Rigidbody2D rb2d;
     public SpriteRenderer sprite;
+    public Animator anim;
     public int hitpoints = 1;
     public float moveSpeed;
     public float changeDirectionTime = 15;
+    public float maxVelocity;
     public float changeDir = 15;
     // Start is called before the first frame update
     void Start()
@@ -46,6 +48,9 @@ public class EnemyController : MonoBehaviour
 
         }
         changeDir -= 1f * Time.deltaTime;
+        if(rb2d.velocity.magnitude>maxVelocity){
+            rb2d.velocity= Vector2.ClampMagnitude(rb2d.velocity,maxVelocity);
+        }
         return faceDirection;
     }
 
@@ -59,13 +64,14 @@ public class EnemyController : MonoBehaviour
 
     public void Hit(int val){
         hitpoints-=val;
+        anim.Play("TrashGuy1_hit");
         if(hitpoints<=0){
             KillEnemy();
         }
 
     }
     private void KillEnemy(){
-        
+
         Destroy(this.gameObject);
     }
 }
