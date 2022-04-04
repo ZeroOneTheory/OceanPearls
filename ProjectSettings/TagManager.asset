@@ -9,6 +9,7 @@ TagManager:
   - Out-Bounds
   - Level Control
   - Enemy
+  - PowerUp
   layers:
   - Default
   - TransparentFX

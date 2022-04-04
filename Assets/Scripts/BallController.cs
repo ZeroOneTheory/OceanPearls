@@ -81,7 +81,7 @@ public class BallController : MonoBehaviour
         rb2d.velocity = lastVelocity;
 
     }
-    private void GetBallComponents()
+    public void GetBallComponents()
     {
         rb2d = GetComponent<Rigidbody2D>();
         m_col = GetComponent<CircleCollider2D>();
@@ -122,8 +122,13 @@ public class BallController : MonoBehaviour
 
         if (col.gameObject.tag == "Out-Bounds")
         {
-            BallOutBounds();
-            plyCtrl.ChangeAnimationState("Clarence_lose");
+            if(lvlCtrl.BallCounts()<=1){
+                BallOutBounds();
+                plyCtrl.ChangeAnimationState("Clarence_lose");
+            } else {
+                Destroy(this.gameObject);
+            }
+            
         }
 
         if (col.gameObject.tag == "Bricks")
@@ -160,6 +165,8 @@ public class BallController : MonoBehaviour
                     heldPosition = plyCtrl.ballLaunchTransform;
                     isHeld = true;
                     rb2d.velocity = Vector2.zero;
+                    plyCtrl.SetBallCtrl(this.gameObject);
+
                 }
             }
 

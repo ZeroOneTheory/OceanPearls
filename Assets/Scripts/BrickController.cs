@@ -6,6 +6,7 @@ public class BrickController : MonoBehaviour
 {
     public bool isBreakable = true;
     public int hits = 1;
+    public string dropPower = "";
     private LevelController lvlControl;
 
     [SerializeField]

@@ -77,6 +77,10 @@ public class PlayerController : MonoBehaviour
 
 
     }
+    public void SetBallCtrl(GameObject go){
+        myBall_GO = go;
+        myBallCtrl = myBall_GO.GetComponent<BallController>();
+    }
     public void FailLevel()
     {
 

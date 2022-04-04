@@ -10,7 +10,9 @@ public class LevelController : MonoBehaviour
     [SerializeField]
     private int lastBrickCount = 0;
     public bool levelWin = false;
-    public List<string> levels =new List<string>();
+    public GameObject ballPrefab;
+    public Transform ballSpawnPoint;
+    public List<string> levels = new List<string>();
 
     //  STARTS
     void Awake()
@@ -31,7 +33,23 @@ public class LevelController : MonoBehaviour
             plyCtrl.ChangeAnimationState("Clarence_hit");
 
         }
+        if (Input.GetKeyUp(KeyCode.O))
+        {
+            //CreateBall();
+
+        }
+
         CheckForWin();
+    }
+
+    private void CreateBall()
+    {
+        var newBall = GameObject.Instantiate(ballPrefab);
+        newBall.transform.position = ballSpawnPoint.position;
+        Vector2 launchDirection = new Vector2(-2, 12);
+        var newBallCtrl = newBall.GetComponent<BallController>();
+        newBallCtrl.LaunchBall(launchDirection);
+        newBallCtrl.GetBallComponents();
     }
 
     //  METHODS
@@ -65,6 +83,18 @@ public class LevelController : MonoBehaviour
 
 
     }
+
+    public int BallCounts()
+    {
+        if (levelWin == false)
+        {
+            GameObject[] balls = GameObject.FindGameObjectsWithTag("Pearls");
+            return balls.Length;
+        }
+
+        return 0;
+
+    }
     public PlayerController GetPlayerController()
     {
         return plyCtrl;
@@ -76,8 +106,9 @@ public class LevelController : MonoBehaviour
     }
     public void ProgressLevel()
     {
-        var level_name="StageScene";
-        switch(SceneManager.GetActiveScene().name){
+        var level_name = "StageScene";
+        switch (SceneManager.GetActiveScene().name)
+        {
 
             case "StageScene": level_name = "Level_0"; break;
             case "Level_0": level_name = "Level_1"; break;
