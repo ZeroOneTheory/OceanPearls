@@ -12,6 +12,8 @@ public class BallController : MonoBehaviour
     private PlayerController plyCtrl;
     [SerializeField]
     private LevelController lvlCtrl;
+    public bool isHeld = true;
+    public Transform heldPosition;
 
     public Rigidbody2D rb2d;
     public Vector2 startDirection;
@@ -20,7 +22,6 @@ public class BallController : MonoBehaviour
     public float bounceSpeed = 1f;
     public float maxVelocity = 20f;
     public float minVelocity = 15f;
-    public bool colliderEnabled = false;
 
     //  START
     void Awake()
@@ -32,22 +33,29 @@ public class BallController : MonoBehaviour
     void Update()
     {
         lastVelocity = rb2d.velocity;
-        m_col.enabled = colliderEnabled;
+
         if (lvlCtrl.levelWin)
         {
             rb2d.velocity = Vector2.zero;
         }
 
-        if (rb2d.velocity.magnitude < minVelocity)
+        if (plyCtrl.isDead == false)
         {
-            rb2d.AddRelativeForce(rb2d.velocity,ForceMode2D.Impulse);
-            Debug.Log("BELOW MIN!" + rb2d.velocity.magnitude);
+            if (rb2d.velocity.magnitude < minVelocity)
+            {
+                rb2d.AddRelativeForce(rb2d.velocity, ForceMode2D.Impulse);
+
+            }
+            if (rb2d.velocity.magnitude > maxVelocity)
+            {
+                rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+
+            }
+
+            CaughtBallMode(heldPosition);
+
         }
-        if (rb2d.velocity.magnitude > maxVelocity)
-        {
-            rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
-            Debug.Log("ABOVE MAX!" + rb2d.velocity.magnitude);
-        }
+
     }
 
     //  METHODS
@@ -56,9 +64,15 @@ public class BallController : MonoBehaviour
 
         rb2d.AddForce(force, ForceMode2D.Impulse);
     }
-    public void EnableBall()
+    public void LaunchBall(Vector2 force)
     {
-        colliderEnabled = true;
+        rb2d.AddForce(force,ForceMode2D.Impulse);
+        isHeld = false;
+        Invoke("EnableCollider",.25f);
+        
+    }
+    private void EnableCollider(){
+            m_col.enabled = true;
     }
     private void BallBounce(Collision2D col)
     {
@@ -81,11 +95,24 @@ public class BallController : MonoBehaviour
         plyCtrl.isDead = true;
     }
 
+    private void CaughtBallMode(Transform held_trans)
+    {
+        held_trans = plyCtrl.ballLaunchTransform;
+        if (isHeld)
+        {
+            if(held_trans!=null){
+                transform.position = held_trans.position;
+                m_col.enabled = false;
+            } 
+            
+        }
+
+    }
     //  EVENTS
     void OnCollisionEnter2D(Collision2D col)
     {
         //Debug.Log(Vector2.Reflect(rb2d.velocity,col.contacts[0].normal)); 
-        Debug.Log(rb2d.velocity.magnitude);
+        //Debug.Log(rb2d.velocity.magnitude);
 
         if (col.gameObject.tag == "Bounds")
         {
@@ -125,7 +152,15 @@ public class BallController : MonoBehaviour
 
         if (col.gameObject.tag == "Player")
         {
-            //ballBounce(col);
+            plyCtrl = col.gameObject.GetComponent<PlayerController>();
+            if (plyCtrl != null)
+            {
+                if (!plyCtrl.PlayerReleaseBall())
+                {
+                    heldPosition = plyCtrl.ballLaunchTransform;
+                    isHeld = true;
+                }
+            }
 
         }
 

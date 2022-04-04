@@ -4,15 +4,15 @@ public class PlayerController : MonoBehaviour
 {
 
     #region Animations
-    public string PLAYER_IDLE = "Clarence_idle";
-    public string PLAYER_SHOOT = "Clarence_shoot";
-    public string PLAYER_CHOMP = "Clarence_chomp";
-    public string PLAYER_HIT = "Clarence_hit";
-    public string PLAYER_LOSE = "Clarence_lose";
-    public string PLAYER_MOVE_L = "Clarence_move-L";
-    public string PLAYER_MOVE_R = "Clarence_move-R";
-    public string PLAYER_POWERUP = "Clarence_powerup";
-    public string PLAYER_SILLY = "Clarence_silly";
+    private string PLAYER_IDLE = "Clarence_idle";
+    private string PLAYER_SHOOT = "Clarence_shoot";
+    private string PLAYER_CHOMP = "Clarence_chomp";
+    private string PLAYER_HIT = "Clarence_hit";
+    private string PLAYER_LOSE = "Clarence_lose";
+    private string PLAYER_MOVE_L = "Clarence_move-L";
+    private string PLAYER_MOVE_R = "Clarence_move-R";
+    private string PLAYER_POWERUP = "Clarence_powerup";
+    private string PLAYER_SILLY = "Clarence_silly";
     #endregion
 
     private Vector2 move;
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private LevelController lvlControl;
     private string currentAnimState;
+    public string powerStatus = "";
 
     public Rigidbody2D rb2d;
     public Transform ballLaunchTransform;
@@ -33,7 +34,7 @@ public class PlayerController : MonoBehaviour
     public bool isDead = false;
     public float moveSpeed = 5f;
     public float maxSpeed = 10f;
-    public float launchLean=-2;
+    public float launchLean = -2;
 
     // START  
     void Awake()
@@ -52,8 +53,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        LaunchBallControl();
-
         AnimationUpdate();
 
     }
@@ -61,7 +60,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
 
-        PlayerMovement();
+        PlayerControls();
 
     }
 
@@ -70,25 +69,30 @@ public class PlayerController : MonoBehaviour
 
     public void SpitPearl()
     {
+
         Vector2 launchDirection = new Vector2(launchLean, ballLaunchSpeed);
-        myBallCtrl.AddForceToBall(launchDirection);
-        releaseBall = true;
-        Invoke("EnableBall", .25f);
+        myBallCtrl.LaunchBall(launchDirection);
+        if(!powerStatus.Contains("catch")){releaseBall = true;}
+        
+
 
     }
     public void FailLevel()
     {
 
-      lvlControl.LevelFailed();
+        lvlControl.LevelFailed();
 
     }
     public void NextLevel()
     {
-        
-      lvlControl.ProgressLevel();
+
+        lvlControl.ProgressLevel();
 
     }
-
+    public bool PlayerReleaseBall()
+    {
+        return releaseBall;
+    }
     private void GetPlayerComponents()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -96,32 +100,20 @@ public class PlayerController : MonoBehaviour
         lvlControl = GameObject.FindObjectOfType<LevelController>();
 
     }
-    private void LaunchBallControl()
-    {
-        if (!releaseBall)
-        {
-            myBall_GO.transform.position = ballLaunchTransform.position;
-        }
-
-        if (releaseBall == false && Input.GetKeyDown(KeyCode.Space))
-        {
-            ChangeAnimationState(PLAYER_SHOOT);
-        }
-    }
-    private void EnableBall()
-    {
-        myBallCtrl.EnableBall();
-    }
-    private void PlayerMovement()
+    private void PlayerControls()
     {
         if (!isDead)
         {
             var xAxisRaw = Input.GetAxis("Horizontal");
+
             position.x += Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
             position.x = Mathf.Clamp(position.x, walls.x, walls.y);
             transform.position = position;
-            if(xAxisRaw<0){launchLean=-2;}else if(xAxisRaw>0){launchLean=2;}
+
+            if (xAxisRaw < 0) { launchLean = -2; } else if (xAxisRaw > 0) { launchLean = 2; }
+
         }
+
 
     }
     private void AnimationUpdate()
@@ -131,30 +123,37 @@ public class PlayerController : MonoBehaviour
         if (!isDead && !lvlControl.levelWin)
         {
 
-            if (releaseBall)
+            if (PlayerReleaseBall())
             {
                 if (xAxisRaw != 0)
                 {
                     if (xAxisRaw < 0)
                     {
                         ChangeAnimationState(PLAYER_MOVE_L);
-                        
+
                     }
                     if (xAxisRaw > 0)
                     {
                         ChangeAnimationState(PLAYER_MOVE_R);
-                        
+
                     }
                 }
                 else
                 {
                     ChangeAnimationState(PLAYER_IDLE);
                 }
-            } else {
-                ChangeAnimationState(PLAYER_IDLE);
+            }
+            else
+            {
+                if ( Input.GetKeyDown(KeyCode.Space))
+                {
+                    Debug.Log("Spit!");
+                    ChangeAnimationState(PLAYER_SHOOT);
+                    SpitPearl();
+                }
             }
 
-            
+
         }
     }
     public void ChangeAnimationState(string newState)
