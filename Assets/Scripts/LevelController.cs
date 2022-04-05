@@ -35,7 +35,7 @@ public class LevelController : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.O))
         {
-            //CreateBall();
+            CreateBall();
 
         }
 
@@ -46,6 +46,7 @@ public class LevelController : MonoBehaviour
     {
         var newBall = GameObject.Instantiate(ballPrefab);
         newBall.transform.position = ballSpawnPoint.position;
+        newBall.gameObject.tag = "Pearls";
         Vector2 launchDirection = new Vector2(-2, 12);
         var newBallCtrl = newBall.GetComponent<BallController>();
         newBallCtrl.LaunchBall(launchDirection);

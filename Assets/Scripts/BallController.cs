@@ -123,6 +123,7 @@ public class BallController : MonoBehaviour
         if (col.gameObject.tag == "Out-Bounds")
         {
             if(lvlCtrl.BallCounts()<=1){
+                Debug.Log(lvlCtrl.BallCounts());
                 BallOutBounds();
                 plyCtrl.ChangeAnimationState("Clarence_lose");
             } else {
