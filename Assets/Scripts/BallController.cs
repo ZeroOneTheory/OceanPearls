@@ -126,7 +126,7 @@ public class BallController : MonoBehaviour
                 BallOutBounds();
                 plyCtrl.ChangeAnimationState("Clarence_lose");
             } else {
-                Destroy(this.gameObject);
+                this.gameObject.SetActive(false);
             }
             
         }

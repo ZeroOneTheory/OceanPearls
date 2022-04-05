@@ -86,10 +86,15 @@ public class LevelController : MonoBehaviour
 
     public int BallCounts()
     {
+        int ball_count=0;
         if (levelWin == false)
         {
-            GameObject[] balls = GameObject.FindGameObjectsWithTag("Pearls");
-            return balls.Length;
+            
+            GameObject[] balls;
+            balls = GameObject.FindGameObjectsWithTag("Pearls");
+            ball_count = balls.Length;
+            return ball_count;  
+
         }
 
         return 0;
