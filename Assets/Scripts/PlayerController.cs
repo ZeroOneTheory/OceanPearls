@@ -67,44 +67,33 @@ public class PlayerController : MonoBehaviour
 
     //  METHODS
 
-    public void SpitPearl()
-    {
-
-        Vector2 launchDirection = new Vector2(launchLean, ballLaunchSpeed);
-        myBallCtrl.LaunchBall(launchDirection);
-        if(!powerStatus.Contains("catch")){releaseBall = true;}
-        
-
-
-    }
-    public void SetBallCtrl(GameObject go){
-        myBall_GO = go;
-        myBallCtrl = myBall_GO.GetComponent<BallController>();
-    }
-    public void FailLevel()
-    {
-
-        lvlControl.LevelFailed();
-
-    }
-    public void NextLevel()
-    {
-
-        lvlControl.ProgressLevel();
-
-    }
-    public bool PlayerReleaseBall()
-    {
-        return releaseBall;
-    }
-    private void GetPlayerComponents()
-    {
-        rb2d = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        lvlControl = GameObject.FindObjectOfType<LevelController>();
-
-    }
-    private void PlayerControls()
+public void SpitPearl()
+{
+    Vector2 launchDirection = new Vector2(launchLean, ballLaunchSpeed);
+    myBallCtrl.LaunchBall(launchDirection);
+    if (!powerStatus.Contains("catch")) { releaseBall = true; }
+}
+public void SetBallCtrl(GameObject go)
+{
+    myBall_GO = go;
+    myBallCtrl = myBall_GO.GetComponent<BallController>();
+}
+public void FailLevel()
+{
+    lvlControl.LevelFailed();
+}
+public void NextLevel()
+{
+    lvlControl.ProgressLevel();
+}
+    
+private void GetPlayerComponents()
+{
+    rb2d = GetComponent<Rigidbody2D>();
+    anim = GetComponent<Animator>();
+    lvlControl = GameObject.FindObjectOfType<LevelController>();
+}
+private void PlayerControls()
     {
         if (!isDead)
         {
@@ -120,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
 
     }
-    private void AnimationUpdate()
+private void AnimationUpdate()
     {
         var xAxisRaw = Input.GetAxis("Horizontal");
 
@@ -149,7 +138,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if ( Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     Debug.Log("Spit!");
                     ChangeAnimationState(PLAYER_SHOOT);
@@ -160,7 +149,7 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-    public void ChangeAnimationState(string newState)
+public void ChangeAnimationState(string newState)
     {
         if (currentAnimState == newState) return;
 
@@ -168,6 +157,15 @@ public class PlayerController : MonoBehaviour
 
         currentAnimState = newState;
     }
+
+    // Properties
+public bool PlayerReleaseBall()
+    {
+        return releaseBall;
+    }
+
+    //Collisions
+
 
 }
 

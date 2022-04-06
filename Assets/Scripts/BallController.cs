@@ -123,7 +123,7 @@ public class BallController : MonoBehaviour
         if (col.gameObject.tag == "Out-Bounds")
         {
             if(lvlCtrl.BallCounts()<=1){
-                Debug.Log(lvlCtrl.BallCounts());
+                Debug.Log(lvlCtrl.BallCounts()); 
                 BallOutBounds();
                 plyCtrl.ChangeAnimationState("Clarence_lose");
             } else {
@@ -148,7 +148,6 @@ public class BallController : MonoBehaviour
         {
             //ballBounce(col);
             EnemyController Enemy = col.gameObject.GetComponent<EnemyController>();
-            Debug.Log(Enemy);
             if (Enemy != null)
             {
                 Enemy.Hit(1);

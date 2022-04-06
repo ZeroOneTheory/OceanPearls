@@ -10,6 +10,7 @@ public class LevelController : MonoBehaviour
     [SerializeField]
     private int lastBrickCount = 0;
     public bool levelWin = false;
+    public int replays = 3;
     public GameObject ballPrefab;
     public Transform ballSpawnPoint;
     public List<string> levels = new List<string>();
@@ -20,13 +21,15 @@ public class LevelController : MonoBehaviour
         plyCtrl = GameObject.FindObjectOfType<PlayerController>();
     }
 
-    void Start()
-    {
-
-    }
-
     //  UPDATES
     void Update()
+    {
+        LevelControlKeys();
+
+        CheckForWin();
+    }
+
+    private void LevelControlKeys()
     {
         if (Input.GetKeyUp(KeyCode.R))
         {
@@ -38,8 +41,6 @@ public class LevelController : MonoBehaviour
             CreateBall();
 
         }
-
-        CheckForWin();
     }
 
     private void CreateBall()
@@ -84,7 +85,6 @@ public class LevelController : MonoBehaviour
 
 
     }
-
     public int BallCounts()
     {
         int ball_count=0;
