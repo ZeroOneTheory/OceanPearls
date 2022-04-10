@@ -15,10 +15,30 @@ public class LevelController : MonoBehaviour
     public Transform ballSpawnPoint;
     public List<string> levels = new List<string>();
 
+    public GameObject prefab;
+    public Wave[] waves;
+    
+
+    Wave currentWave;
+    int currentWaveNumber;
+    int prefabsRemainingToSpawn;
+    float nextSpawnTime;
+
+    [System.Serializable]
+    public class Wave{
+        public int prefabCount;
+        public float timeBetweenSpawns;
+    }
+
     //  STARTS
     void Awake()
     {
         plyCtrl = GameObject.FindObjectOfType<PlayerController>();
+        EventManager.ExampleEvent += CreateBall;
+    }
+
+    void Start(){
+        NextWave();
     }
 
     //  UPDATES
@@ -27,6 +47,20 @@ public class LevelController : MonoBehaviour
         LevelControlKeys();
 
         CheckForWin();
+
+        if( prefabsRemainingToSpawn >0 && Time.time > nextSpawnTime){
+            prefabsRemainingToSpawn --;
+            nextSpawnTime = Time.time + currentWave.timeBetweenSpawns;
+
+            //Instantiate the object:  Controller control = Instantiate(prefab, Vector2.zero, Quaternion.identity) as Controller;
+        }
+    }
+
+    void NextWave(){
+        currentWaveNumber ++;
+        currentWave = waves[currentWaveNumber-1];
+
+        prefabsRemainingToSpawn = currentWave.prefabCount;
     }
 
     private void LevelControlKeys()

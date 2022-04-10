@@ -14051,6 +14051,10 @@ MonoBehaviour:
   levels:
   - Level_0
   - Level_1
+  prefab: {fileID: 0}
+  waves:
+  - prefabCount: 0
+    timeBetweenSpawns: 0
 --- !u!1 &1458222217
 GameObject:
   m_ObjectHideFlags: 0
@@ -14977,27 +14981,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bf39e1900b74954f90f427d81556127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &1687118176
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687118172}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.5
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0.25
-  m_Material: {fileID: 6200000, guid: cc59be4a1b92d214984c7cb50be38034, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 0
 --- !u!58 &1687118177
 CircleCollider2D:
   m_ObjectHideFlags: 0
