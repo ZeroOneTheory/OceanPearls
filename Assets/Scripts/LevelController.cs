@@ -38,7 +38,7 @@ public class LevelController : MonoBehaviour
     }
 
     void Start(){
-        NextWave();
+        //NextWave();
     }
 
     //  UPDATES
@@ -48,13 +48,9 @@ public class LevelController : MonoBehaviour
 
         CheckForWin();
 
-        if( prefabsRemainingToSpawn >0 && Time.time > nextSpawnTime){
-            prefabsRemainingToSpawn --;
-            nextSpawnTime = Time.time + currentWave.timeBetweenSpawns;
-
-            //Instantiate the object:  Controller control = Instantiate(prefab, Vector2.zero, Quaternion.identity) as Controller;
-        }
+        //SpawnMethod();
     }
+
 
     void NextWave(){
         currentWaveNumber ++;
@@ -74,6 +70,17 @@ public class LevelController : MonoBehaviour
         {
             CreateBall();
 
+        }
+    }
+
+    private void SpawnMethod()
+    {
+        if (prefabsRemainingToSpawn > 0 && Time.time > nextSpawnTime)
+        {
+            prefabsRemainingToSpawn--;
+            nextSpawnTime = Time.time + currentWave.timeBetweenSpawns;
+
+            //Instantiate the object:  Controller control = Instantiate(prefab, Vector2.zero, Quaternion.identity) as Controller;
         }
     }
 
@@ -141,8 +148,9 @@ public class LevelController : MonoBehaviour
     }
     public void LevelFailed()
     {
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
+        SceneManager.LoadScene("Main_Menu");
+        //Scene scene = SceneManager.GetActiveScene();
+        //SceneManager.LoadScene(scene.name);
     }
     public void ProgressLevel()
     {

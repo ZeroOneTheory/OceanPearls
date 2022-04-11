@@ -54,3 +54,6 @@ TagManager:
   - name: Bricks
     uniqueID: 2263072911
     locked: 0
+  - name: Foreground
+    uniqueID: 642213599
+    locked: 0
