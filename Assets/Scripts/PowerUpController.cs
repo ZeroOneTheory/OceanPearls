@@ -6,7 +6,7 @@ public class PowerUpController : MonoBehaviour
 {
     void Update()
     {
-        transform.Translate(Vector3.down * 3f * Time.deltaTime, Space.World);
+        transform.Translate(Vector3.down * 4f * Time.deltaTime, Space.World);
     }
 
     void OnCollisionStay2D(Collision2D col)

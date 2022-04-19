@@ -4,24 +4,26 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    private Vector2 move;
-    private Vector2 position;
-    private Vector2 startPosition;
-    private Vector2 lastVelocity;
-    [SerializeField]
-    private PlayerController plyCtrl;
-    [SerializeField]
-    private LevelController lvlCtrl;
-    public bool isHeld = true;
-    public Transform heldPosition;
-
+    [Header("Ball Kinematics")]
     public Rigidbody2D rb2d;
     public Vector2 startDirection;
-    public CircleCollider2D m_col;
+    public CircleCollider2D m_col {get; private set;}
+
     public float steepAngleOffset = .01f;
     public float bounceSpeed = 1f;
     public float maxVelocity = 20f;
     public float minVelocity = 15f;
+
+    private Vector2 move;
+    private Vector2 position;
+    private Vector2 startPosition;
+    private Vector2 lastVelocity;
+
+
+    [SerializeField]
+    public bool isHeld {get; private set;}
+    public Transform heldInPosition {get; private set;}
+
 
     //  START
     void Awake()
@@ -34,13 +36,12 @@ public class BallController : MonoBehaviour
     {
         lastVelocity = rb2d.velocity;
 
-        if (lvlCtrl.levelWin)
+        if (LevelController.Instance.levelWin)
         {
             rb2d.velocity = Vector2.zero;
-        }
 
-        if (plyCtrl.isDead == false)
-        {
+        } else {
+
             if (rb2d.velocity.magnitude < minVelocity)
             {
                 rb2d.AddRelativeForce(rb2d.velocity, ForceMode2D.Impulse);
@@ -52,16 +53,16 @@ public class BallController : MonoBehaviour
 
             }
 
-            CaughtBallMode(heldPosition);
-
+            CaughtBallMode(heldInPosition);
         }
+
+
 
     }
 
     //  METHODS
     public void AddForceToBall(Vector2 force)
     {
-
         rb2d.AddForce(force, ForceMode2D.Impulse);
     }
     public void LaunchBall(Vector2 force)
@@ -83,27 +84,27 @@ public class BallController : MonoBehaviour
     }
     public void GetBallComponents()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        m_col = GetComponent<CircleCollider2D>();
-        lvlCtrl = GameObject.FindGameObjectWithTag("Level Control").GetComponent<LevelController>();
-        plyCtrl = lvlCtrl.GetPlayerController();
+        rb2d = GetComponent<Rigidbody2D>(); if(rb2d==null){Debug.LogError("RigidBody2D Not Found");}
+        m_col = GetComponent<CircleCollider2D>(); if(m_col==null){Debug.LogError("CircleCollider Not Found");}
         startPosition = transform.position;
+
     }
     private void BallOutBounds()
     {
         rb2d.velocity = lastVelocity * .5f;
-        plyCtrl.isDead = true;
+        Debug.Log("FROM BALL: Ball out of Bounds");
     }
 
     private void CaughtBallMode(Transform held_trans)
     {
-        held_trans = plyCtrl.ballLaunchTransform;
         if (isHeld)
         {
             if(held_trans!=null){
                 transform.position = held_trans.position;
                 m_col.enabled = false;
-            } 
+            } else {
+                isHeld = false;
+            }
             
         }
 
@@ -122,13 +123,8 @@ public class BallController : MonoBehaviour
 
         if (col.gameObject.tag == "Out-Bounds")
         {
-            if(lvlCtrl.BallCounts()<=1){
-                Debug.Log(lvlCtrl.BallCounts()); 
-                BallOutBounds();
-                plyCtrl.ChangeAnimationState("Clarence_lose");
-            } else {
-                this.gameObject.SetActive(false);
-            }
+
+            Debug.Log("Ball Out Bounds!");
             
         }
 
@@ -157,15 +153,14 @@ public class BallController : MonoBehaviour
 
         if (col.gameObject.tag == "Player")
         {
-            plyCtrl = col.gameObject.GetComponent<PlayerController>();
-            if (plyCtrl != null)
+            if (PlayerController.Instance)
             {
-                if (!plyCtrl.PlayerReleaseBall())
+                if (!PlayerController.Instance.PlayerReleaseBall())
                 {
-                    heldPosition = plyCtrl.ballLaunchTransform;
+                    heldInPosition = PlayerController.Instance.ballLaunchTransform;
                     isHeld = true;
                     rb2d.velocity = Vector2.zero;
-                    plyCtrl.SetBallCtrl(this.gameObject);
+                    PlayerController.Instance.SetNextBallToThrow(this.gameObject);
 
                 }
             }

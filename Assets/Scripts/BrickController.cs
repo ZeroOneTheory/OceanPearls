@@ -7,7 +7,6 @@ public class BrickController : MonoBehaviour
     public bool isBreakable = true;
     public int hits = 1;
     public string dropPower = "";
-    private LevelController lvlControl;
 
     [SerializeField]
     private SpriteRenderer sprite;
@@ -16,7 +15,6 @@ public class BrickController : MonoBehaviour
     void Awake(){
 
         sprite = GetComponent<SpriteRenderer>();
-        lvlControl = GameObject.FindObjectOfType<LevelController>();
     }
 
     public void KnockOnBrick(int m_hits){

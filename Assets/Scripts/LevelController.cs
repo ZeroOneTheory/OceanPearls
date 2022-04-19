@@ -5,105 +5,127 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerController plyCtrl;
-    [SerializeField]
-    private int lastBrickCount = 0;
-    public bool levelWin = false;
-    public int replays = 3;
-    public GameObject ballPrefab;
-    public Transform ballSpawnPoint;
-    public List<string> levels = new List<string>();
-
-    public GameObject prefab;
-    public Wave[] waves;
-    
-
-    Wave currentWave;
-    int currentWaveNumber;
-    int prefabsRemainingToSpawn;
-    float nextSpawnTime;
-
-    [System.Serializable]
-    public class Wave{
-        public int prefabCount;
-        public float timeBetweenSpawns;
-    }
-
-    //  STARTS
-    void Awake()
+   
+    public static LevelController Instance {get; private set;}
+   
+    private void Awake()
     {
-        plyCtrl = GameObject.FindObjectOfType<PlayerController>();
-        EventManager.ExampleEvent += CreateBall;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(transform.gameObject);
+        }
+        else
+        {
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        FetchPlayerInstance();
+
     }
 
-    void Start(){
-        //NextWave();
+
+    public PlayerController plyCtrl {get; private set;}
+    public GameObject _Player {get; private set;}
+
+    public bool levelWin {get; private set;}
+    public bool levelInProgress {get; private set;}
+    public int replays = 3; // Link Back to GameController
+
+    [SerializeField]
+    public GameObject ballPrefab;
+    [SerializeField]
+    public Transform  ballSpawnPoint;
+
+    private int lastBrickCount = 0;
+    private bool willRestart = false;
+
+    void Start()
+    {
+        EventManager.ExampleEvent += CreateBall;
+        willRestart = false;
     }
 
     //  UPDATES
     void Update()
     {
         LevelControlKeys();
-
-        CheckForWin();
-
-        //SpawnMethod();
-    }
-
-
-    void NextWave(){
-        currentWaveNumber ++;
-        currentWave = waves[currentWaveNumber-1];
-
-        prefabsRemainingToSpawn = currentWave.prefabCount;
+        if(levelInProgress){
+            CheckForWin();
+        }
     }
 
     private void LevelControlKeys()
     {
         if (Input.GetKeyUp(KeyCode.R))
         {
-            plyCtrl.ChangeAnimationState("Clarence_hit");
+            willRestart = true;
+            LevelFailed();
 
         }
         if (Input.GetKeyUp(KeyCode.O))
         {
             CreateBall();
-
-        }
-    }
-
-    private void SpawnMethod()
-    {
-        if (prefabsRemainingToSpawn > 0 && Time.time > nextSpawnTime)
-        {
-            prefabsRemainingToSpawn--;
-            nextSpawnTime = Time.time + currentWave.timeBetweenSpawns;
-
-            //Instantiate the object:  Controller control = Instantiate(prefab, Vector2.zero, Quaternion.identity) as Controller;
         }
     }
 
     private void CreateBall()
     {
-        var newBall = GameObject.Instantiate(ballPrefab);
-        newBall.transform.position = ballSpawnPoint.position;
-        newBall.gameObject.tag = "Pearls";
-        Vector2 launchDirection = new Vector2(-2, 12);
-        var newBallCtrl = newBall.GetComponent<BallController>();
-        newBallCtrl.LaunchBall(launchDirection);
-        newBallCtrl.GetBallComponents();
+        if(ballPrefab!=null){
+            var newBall = GameObject.Instantiate(ballPrefab);
+            var newBallCtrl = newBall.GetComponent<BallController>();
+
+
+            if(ballSpawnPoint==null){
+                if(FetchPlayerInstance()){
+                    ballSpawnPoint = PlayerController.Instance.ballLaunchTransform;  
+                } else {
+                    ballSpawnPoint.position = gameObject.transform.position; // CHANGE THIS!
+                }
+            }
+            newBall.transform.position = ballSpawnPoint.position;
+            newBall.gameObject.tag = "Pearls";
+            Vector2 launchDirection = new Vector2(-2, 12);
+            
+            newBallCtrl.LaunchBall(launchDirection);
+            newBallCtrl.GetBallComponents();
+        }
+        
+    }
+
+    private bool FetchPlayerInstance()
+    {
+
+        if (PlayerController.Instance != null)
+        {
+            plyCtrl = PlayerController.Instance;
+            _Player = PlayerController.Instance.gameObject;
+            return true;
+        }
+        else { Debug.Log("LevelController: _Player Not Found/Assigned"); }
+        return false;
     }
 
     //  METHODS
-
+    
     public void CheckForWin()
     {
-
-
         if (levelWin == false)
         {
-            int unbreakables = 0;
+            lastBrickCount = BrickCount(true);
+
+            if (BrickCount(false) <= 0)
+            {
+                EndLevel();
+            }
+        }
+
+    }
+    public int BrickCount(bool includeUnbreakables){
+        int unbreakables = 0;
             GameObject[] bricks = GameObject.FindGameObjectsWithTag("Bricks");
             foreach (GameObject b in bricks)
             {
@@ -113,57 +135,64 @@ public class LevelController : MonoBehaviour
                     unbreakables++;
                 }
             }
-            lastBrickCount = bricks.Length;
-
-            if (bricks.Length - unbreakables <= 0)
-            {
-                Debug.Log("WIN!");
-                plyCtrl.ChangeAnimationState("Clarence_silly");
-                levelWin = true;
-            }
-        }
-
-
-
+        if(includeUnbreakables){return bricks.Length;}
+        return bricks.Length - unbreakables;
     }
     public int BallCounts()
     {
-        int ball_count=0;
-        if (levelWin == false)
-        {
-            
+        int ball_count = 0;
             GameObject[] balls;
             balls = GameObject.FindGameObjectsWithTag("Pearls");
             ball_count = balls.Length;
-            return ball_count;  
+            return ball_count;
 
-        }
-
-        return 0;
-
-    }
-    public PlayerController GetPlayerController()
-    {
-        return plyCtrl;
     }
     public void LevelFailed()
     {
-        SceneManager.LoadScene("Main_Menu");
-        //Scene scene = SceneManager.GetActiveScene();
-        //SceneManager.LoadScene(scene.name);
+        if(replays>0){
+            willRestart=true;
+            replays-=1;
+        }
+
+        if (willRestart)
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            FetchPlayerInstance();
+            StartLevel();
+            willRestart = false;
+            SceneManager.LoadScene(scene.name);
+
+        }
+        else
+        {
+            SceneManager.LoadScene("Main_Menu");
+            
+        }
+
+
     }
     public void ProgressLevel()
     {
-        var level_name = "StageScene";
-        switch (SceneManager.GetActiveScene().name)
-        {
-
-            case "StageScene": level_name = "Level_0"; break;
-            case "Level_0": level_name = "Level_1"; break;
-            case "Level_1": level_name = "Level_0"; break;
-
-        }
-
+        var level_name = "Main_Menu";
+        StartLevel();
         SceneManager.LoadScene(level_name);
+        
+    }
+    public void StartLevel(){
+        levelWin = false;
+        levelInProgress = true;
+
+        CreateBall();
+        Debug.Log("Level Start");
+    }
+    public void EndLevel(){
+
+        if(FetchPlayerInstance()){
+            plyCtrl.ChangeAnimationState("Clarence_silly");
+        }
+        
+        levelWin = true;
+        levelInProgress = false;
+        Debug.Log("End Level");
     }
 }

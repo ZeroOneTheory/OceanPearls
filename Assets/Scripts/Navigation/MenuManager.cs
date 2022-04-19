@@ -1,17 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity;
 using UnityEngine;
 
-public  class MenuManager: MonoBehaviour
+public static class MenuManager
 {
-    public  bool isInititialized {get; private set;}
-    public  GameObject menu_main, menu_settings, menu_levelSelect, menu_scores;
+    public static  bool isInititialized {get; private set;}
+    public static GameObject menu_main, menu_settings, menu_levelSelect, menu_scores;
 
-    public void OpenMenu(Menu menu, GameObject callingmenu){
+    public static void InitMainMenu(){
+        menu_main = GameObject.Find("MAIN_MENU");
+        //menu_settings = Msettings;
+        menu_levelSelect = GameObject.Find("LEVEL_SELECT");
+        //menu_scores = Mscores;
+        isInititialized = true;
+    }
 
-        
-        switch(menu){
-
+    public static void OpenMainMenu(Menu menu, GameObject callingmenu){
+        if(!isInititialized){
+            InitMainMenu();
+            
+            if(menu_main==null){ Debug.Log("No MAIN_MENU Found"); return;}
+            if(menu_levelSelect==null){ Debug.Log("No LEVEL_SELECT Found"); return;}
+        }
+   
+        switch(menu)
+        {
             case Menu.MAIN_MENU: 
             menu_main.SetActive(true);
             break;

@@ -1,7 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance {get; private set;}
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+            }
+        }
+        GetPlayerComponents();
+    }
 
     #region Animations
     private string PLAYER_IDLE = "Clarence_idle";
@@ -16,10 +34,11 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     private Vector2 move;
-    private Vector2 position;
-    private BallController myBallCtrl;
+    private Vector2 currentPosition;
+    private List<BallController> heldBalls = new List<BallController>();
+
+    public BallController throwingBall {get; private set;}
     [SerializeField]
-    private LevelController lvlControl;
     private string currentAnimState;
     public string powerStatus = "";
 
@@ -36,17 +55,10 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 10f;
     public float launchLean = -2;
 
-    // START  
-    void Awake()
-    {
-        GetPlayerComponents();
-    }
-
     void Start()
-    {
-
-        myBallCtrl = myBall_GO.GetComponent<BallController>();
-        position = transform.position;
+    {       
+        currentPosition = transform.position;
+        ballLaunchTransform = GameObject.Find("PLAYER_LAUNCH").gameObject.transform;
     }
 
     //  UPDATES
@@ -69,29 +81,34 @@ public class PlayerController : MonoBehaviour
 
 public void SpitPearl()
 {
-    Vector2 launchDirection = new Vector2(launchLean, ballLaunchSpeed);
-    myBallCtrl.LaunchBall(launchDirection);
-    if (!powerStatus.Contains("catch")) { releaseBall = true; }
+    if(throwingBall!=null){
+
+        Vector2 launchDirection = new Vector2(launchLean, ballLaunchSpeed);
+        throwingBall.LaunchBall(launchDirection);
+
+        if (!powerStatus.Contains("catch")) 
+            { releaseBall = true; }
+    }
+    
 }
-public void SetBallCtrl(GameObject go)
+public void SetNextBallToThrow(GameObject go)
 {
     myBall_GO = go;
-    myBallCtrl = myBall_GO.GetComponent<BallController>();
+    throwingBall = myBall_GO.GetComponent<BallController>();
 }
-public void FailLevel()
+public void FailLevel() // FailLevel Event   / UPDATE THIS
 {
-    lvlControl.LevelFailed();
+    LevelController.Instance.LevelFailed();
 }
-public void NextLevel()
+public void NextLevel() // Next Level Event  / UPDATE THIS!
 {
-    lvlControl.ProgressLevel();
+    LevelController.Instance.ProgressLevel();
 }
     
 private void GetPlayerComponents()
 {
     rb2d = GetComponent<Rigidbody2D>();
     anim = GetComponent<Animator>();
-    lvlControl = GameObject.FindObjectOfType<LevelController>();
 }
 private void PlayerControls()
     {
@@ -99,9 +116,9 @@ private void PlayerControls()
         {
             var xAxisRaw = Input.GetAxis("Horizontal");
 
-            position.x += Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
-            position.x = Mathf.Clamp(position.x, walls.x, walls.y);
-            transform.position = position;
+            currentPosition.x += Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+            currentPosition.x = Mathf.Clamp(currentPosition.x, walls.x, walls.y);
+            transform.position = currentPosition;
 
             if (xAxisRaw < 0) { launchLean = -2; } else if (xAxisRaw > 0) { launchLean = 2; }
 
@@ -113,7 +130,7 @@ private void AnimationUpdate()
     {
         var xAxisRaw = Input.GetAxis("Horizontal");
 
-        if (!isDead && !lvlControl.levelWin)
+        if (!isDead && !LevelController.Instance.levelWin)
         {
 
             if (PlayerReleaseBall())

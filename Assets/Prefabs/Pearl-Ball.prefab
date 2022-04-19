@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1380814369165035274}
   m_Layer: 0
   m_Name: Pearl-Ball
-  m_TagString: Untagged
+  m_TagString: Pearls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,13 +134,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7a4c5a8c5ad1b4bbc482a72f849132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plyCtrl: {fileID: 0}
-  lvlCtrl: {fileID: 0}
   rb2d: {fileID: 1380814369165035275}
   startDirection: {x: 1, y: -1}
-  m_col: {fileID: 1380814369165035278}
   steepAngleOffset: 4
   bounceSpeed: 12
   maxVelocity: 20
   minVelocity: 15
-  colliderEnabled: 0
+  ref_PlyCtrl: {fileID: 0}

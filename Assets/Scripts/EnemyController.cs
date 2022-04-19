@@ -13,11 +13,7 @@ public class EnemyController : MonoBehaviour
     public float changeDirectionTime = 15;
     public float maxVelocity;
     public float changeDir = 15;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
     // Update is called once per frame
     void Update()

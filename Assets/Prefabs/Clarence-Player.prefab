@@ -115,19 +115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9232e033e12312e44a4ce3bdbce9026d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PLAYER_IDLE: Clarence_idle
-  PLAYER_SHOOT: Clarence_shoot
-  PLAYER_CHOMP: Clarence_chomp
-  PLAYER_HIT: Clarence_hit
-  PLAYER_LOSE: Clarence_lose
-  PLAYER_MOVE_L: Clarence_move-L
-  PLAYER_MOVE_R: Clarence_move-R
-  PLAYER_POWERUP: Clarence_powerup
-  PLAYER_SILLY: Clarence_silly
-  lvlControl: {fileID: 0}
+  currentAnimState: 
+  powerStatus: 
   rb2d: {fileID: 3265662278296170996}
   ballLaunchTransform: {fileID: 3265662279507366386}
-  myBall_GO: {fileID: 0}
+  myBall_GO: {fileID: 1380814369165035279, guid: 34bc4f5b7a6a7054fb64ead4f38e40a2, type: 3}
   anim: {fileID: 3265662278296170997}
   walls: {x: -13, y: 13}
   releaseBall: 0
@@ -135,6 +127,7 @@ MonoBehaviour:
   isDead: 0
   moveSpeed: 34
   maxSpeed: 20
+  launchLean: -2
 --- !u!50 &3265662278296170996
 Rigidbody2D:
   serializedVersion: 4
@@ -185,9 +178,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3265662279507366386}
   m_Layer: 0
-  m_Name: ballLauncher
+  m_Name: PLAYER_LAUNCH
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
