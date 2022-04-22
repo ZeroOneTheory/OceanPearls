@@ -6,3 +6,4 @@ public enum Menu
     LEVEL_SELECT,
     SCORES
 }
+

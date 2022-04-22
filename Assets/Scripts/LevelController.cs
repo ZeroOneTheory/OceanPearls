@@ -10,6 +10,7 @@ public class LevelController : MonoBehaviour
    
     private void Awake()
     {
+        Debug.Log("Level Controller Awake");
         if (Instance == null)
         {
             Instance = this;
@@ -43,9 +44,15 @@ public class LevelController : MonoBehaviour
     private int lastBrickCount = 0;
     private bool willRestart = false;
 
+    void OnEnable()
+    {
+        Debug.Log(" Level Controller OnEnable called");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+
     void Start()
     {
-        EventManager.ExampleEvent += CreateBall;
         willRestart = false;
     }
 
@@ -81,17 +88,17 @@ public class LevelController : MonoBehaviour
 
             if(ballSpawnPoint==null){
                 if(FetchPlayerInstance()){
-                    ballSpawnPoint = PlayerController.Instance.ballLaunchTransform;  
-                } else {
-                    ballSpawnPoint.position = gameObject.transform.position; // CHANGE THIS!
+                    ballSpawnPoint = PlayerController.Instance.ballLaunchTransform; 
+                    newBall.transform.position = ballSpawnPoint.position;
+                    newBall.gameObject.tag = "Pearls";
+                    Vector2 launchDirection = new Vector2(-2, 12);
+                    
+                    newBallCtrl.LaunchBall(launchDirection);
+                    newBallCtrl.GetBallComponents();
+                    
                 }
             }
-            newBall.transform.position = ballSpawnPoint.position;
-            newBall.gameObject.tag = "Pearls";
-            Vector2 launchDirection = new Vector2(-2, 12);
             
-            newBallCtrl.LaunchBall(launchDirection);
-            newBallCtrl.GetBallComponents();
         }
         
     }
@@ -110,6 +117,12 @@ public class LevelController : MonoBehaviour
     }
 
     //  METHODS
+    
+    private  void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("OnSceneLoaded: " + scene.name);
+        StartLevel();
+    }
     
     public void CheckForWin()
     {
@@ -181,8 +194,6 @@ public class LevelController : MonoBehaviour
     public void StartLevel(){
         levelWin = false;
         levelInProgress = true;
-
-        CreateBall();
         Debug.Log("Level Start");
     }
     public void EndLevel(){
@@ -194,5 +205,11 @@ public class LevelController : MonoBehaviour
         levelWin = true;
         levelInProgress = false;
         Debug.Log("End Level");
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("OnDisable");
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

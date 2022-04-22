@@ -39,6 +39,7 @@ public class BallController : MonoBehaviour
         if (LevelController.Instance.levelWin)
         {
             rb2d.velocity = Vector2.zero;
+            Debug.Log("Ball Set to zero");
 
         } else {
 
@@ -53,7 +54,7 @@ public class BallController : MonoBehaviour
 
             }
 
-            CaughtBallMode(heldInPosition);
+            UpdateCaughtBallMode(heldInPosition);
         }
 
 
@@ -95,7 +96,7 @@ public class BallController : MonoBehaviour
         Debug.Log("FROM BALL: Ball out of Bounds");
     }
 
-    private void CaughtBallMode(Transform held_trans)
+    private void UpdateCaughtBallMode(Transform held_trans)
     {
         if (isHeld)
         {
@@ -109,6 +110,15 @@ public class BallController : MonoBehaviour
         }
 
     }
+    private void UpdateBallToHeldInPosition(Transform newHeldTransform)
+    {
+        heldInPosition = newHeldTransform;
+        isHeld = true;
+        rb2d.velocity = Vector2.zero;
+        PlayerController.Instance.SetNextBallToThrow(this.gameObject);
+    }
+    
+    
     //  EVENTS
     void OnCollisionEnter2D(Collision2D col)
     {
@@ -157,10 +167,7 @@ public class BallController : MonoBehaviour
             {
                 if (!PlayerController.Instance.PlayerReleaseBall())
                 {
-                    heldInPosition = PlayerController.Instance.ballLaunchTransform;
-                    isHeld = true;
-                    rb2d.velocity = Vector2.zero;
-                    PlayerController.Instance.SetNextBallToThrow(this.gameObject);
+                    UpdateBallToHeldInPosition(PlayerController.Instance.ballLaunchTransform);
 
                 }
             }
